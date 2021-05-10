@@ -8,7 +8,7 @@ class Database( object ):
     def __init__( self, file, **opt ):
         self._debug = opt.get('debug', False )
         self._db_file = file
-        self._db = sqlite3.connect( self._db_file )
+        self._db = sqlite3.connect( self._db_file, check_same_thread=False )
 
 
     def init( self ):
@@ -40,14 +40,6 @@ class Database( object ):
         cur.execute( qstr )
         return cur.fetchall()
 
-    def update( self, data, where=dict() ):
-        qstr = "select * from users where user.id == '%s'" % ( userid )
-        if self._debug:
-            print("DB U: %s" % ( qstr) )
-
-        cur = self._db.cursor()
-        cur.execute( qstr )
-        self._db.commit()
 
     def insert( self, data ):
         qstr = "insert into users( uname, email, password, role ) values( '%s', '%s', '%s', '%s' )" % ( data['uname'], data['email'], data['password'], data['role'] )

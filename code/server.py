@@ -28,16 +28,21 @@ app.secret_key = b'aaaaaaaaaaaaaaaaaaaaaa'
 def page_login( ):
 
     if flask.request.method == 'POST':
-        if flask.request.form['username'] not in USERS:
-            return flask.redirect( "/error/missing_user" )
 
         username = flask.request.form['username']
+
+        info = db.query( {"uname": username })
+        pprint( info )
+
         reqpaswd = get_checksum( flask.request.form['userpass'] )
-        refpaswd = get_checksum( USERS[ username ]['passwd'] )
+        refpaswd = info['password']
+
         if refpaswd == reqpaswd:
-            user = USERS[ username ]
+
+            user = info
             flask.session['username'] = username
             flask.session['userid'] = user['id']
+
             if user['role'] in ("user"):
                 return flask.redirect( flask.url_for( 'page_user' ) )
             elif user['role'] in ("admin"):
