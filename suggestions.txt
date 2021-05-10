@@ -1,0 +1,39 @@
+## No need for pentest distros
+
+## Crypto stuff?
+
+## Scan networks
+
+## DNS lookups (enumeration)
+
+## Simple web-reverse-shell
+
+## Simple reverse-shell
+
+## NC as reverse shell
+
+## File injection 
+
+## Reference mistakes (IDOR)
+Iterative item references
+
+## SQL Injections, API based
+Extract data from one or more tables and password
+Username and password
+
+## Crack extarcted passwords with hashcat or similar
+Login as specific user
+
+## 
+
+
+## Google Dorks
+# https://www.exploit-db.com/google-hacking-database
+
+
+
+1. logga in mha sql injection
+2. hitta ett konto med shell access
+3. logga in med konto / rev.shell ?
+4. ladda ner krypterad fil
+5. läs innehåålet i krypterade filen
