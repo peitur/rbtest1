@@ -61,12 +61,14 @@ for R in $( cat ${REFL} ); do
 	HSHPWD=$( echo $R|cut -d: -f 2 )
 
 	if [[ ${#R} ]]; then
-	
+
 		for D in $( cat ${DICT} ); do
 			if [[ ${#D} ]]; then
 				DEC=$D
-				COD=$( echo $D|$CHKSUM )
-				if [[ ${HSHPWD} == ${COD} ]]; then
+				COD=$( echo $D|$CHKSUM|cut -d' ' -f 1)
+				echo "$D - ${HSHPWD} - ${COD}"
+
+				if [[ "${HSHPWD}" == "${COD}" ]]; then
 					echo "$UNAME: $DEC"
 				fi
 			fi
@@ -74,4 +76,3 @@ for R in $( cat ${REFL} ); do
 
 	fi
 done
-
