@@ -10,15 +10,8 @@ import server.users
 
 from pprint import pprint
 
-USERS={
-    "user1":{ "id":"1", "name":"user one", "passwd":"user1pass", "role":"admin"},
-    "user2":{ "id":"2", "name":"user two", "passwd":"user2pass", "role":"user" },
-    "user3":{ "id":"3", "name":"user three", "passwd":"user3pass", "role":"user"},
-    "user4":{ "id":"4", "name":"user four", "passwd":"user4pass", "role":"user"}
-}
-
 DB_FILE="db/test.db"
-users = server.users.Users(  file=DB_FILE )
+users = server.users.Users(  file=DB_FILE, debug=True )
 
 app = flask.Flask( __name__, template_folder="templates.d" )
 app.secret_key = b'aaaaaaaaaaaaaaaaaaaaaa'
@@ -33,35 +26,29 @@ def page_login( ):
         username = flask.request.form['username']
         reqpaswd = get_checksum( flask.request.form['userpass'] )
 
-        q = users.get_user( username )
-        if len( q ) != 1:
+        info = users.login_user( username, reqpaswd )
+
+        if not info:
             return flask.redirect( flask.url_for( 'page_error_badlogin' ) )
 
-        info = q.pop(0)
+        pprint( info )
 
-        refpaswd = info['password']
+        flask.session['username'] = info['uname']
+        flask.session['userid'] = info['id']
+        flask.session['userrole'] = info['role']
+        flask.session['email'] = info['email']
+        flask.session['role'] = info['role']
 
-        if refpaswd == reqpaswd:
 
-            flask.session['username'] = username
-            flask.session['userid'] = info['id']
-            flask.session['userrole'] = info['role']
-            flask.session['email'] = info['email']
-            flask.session['role'] = info['role']
-
-            pprint( info )
-
-            if info['role'] in ("user"):
-                return flask.redirect( flask.url_for( 'page_user' ) )
-            elif info['role'] in ("admin"):
-                return flask.redirect( flask.url_for( 'page_admin' ) )
-            else:
-                return flask.redirect( flask.url_for( 'page_logout' ) )
-
+        if info['role'] in ("user"):
+            return flask.redirect( flask.url_for( 'page_user' ) )
+        elif info['role'] in ("admin"):
+            return flask.redirect( flask.url_for( 'page_admin' ) )
         else:
-            return flask.redirect( flask.url_for( 'page_error_badlogin' ) )
+            return flask.redirect( flask.url_for( 'page_logout' ) )
 
-    return flask.render_template("login.j2")
+    admins = users.get_admins()
+    return flask.render_template("login.j2", adminlist=admins)
 
 
 @app.route('/user')
@@ -69,9 +56,9 @@ def page_user():
 
     if 'username' in flask.session and flask.session['username']:
         username = flask.session['username']
-        user = users.get_user( username ).pop(0)
-
-        return flask.render_template("user.j2", user={ "name": user['uname']} )
+        user = users.get_username( username ).pop(0)
+        admins = users.get_admins()
+        return flask.render_template("user.j2", user={ "name": user['uname'], "role": user['role']}, adminlist=admins )
 
     return flask.redirect( "/error" )
 
@@ -81,9 +68,10 @@ def page_admin():
     ## SEC: user role validation not done
     if 'username' in flask.session and flask.session['username']:
         username = flask.session['username']
-        user = users.get_user( username ).pop(0)
+        user = users.get_username( username ).pop(0)
+        admins = users.get_admins()
 
-        return flask.render_template("admin.j2", user={ "name": user['uname']} )
+        return flask.render_template("admin.j2", user={ "name": user['uname']}, adminlist=admins )
 
     return flask.redirect( "/error" )
 
@@ -106,6 +94,7 @@ def page_register():
 
         return flask.redirect( flask.url_for( 'page_login' ) )
 
+    admins = users.get_admins()
     return flask.render_template("register.j2" )
 
 

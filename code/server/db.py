@@ -38,7 +38,9 @@ class Database( object ):
             print("DB Q: %s" % ( qstr) )
         cur = self._db.cursor()
         cur.execute( qstr )
-        return cur.fetchall()
+        ret = cur.fetchall()
+        cur.close()
+        return ret
 
 
     def insert( self, data ):
@@ -49,6 +51,7 @@ class Database( object ):
         cur = self._db.cursor()
         try:
             cur.execute( qstr )
+            cur.close()
         except sqlite3.IntegrityError as e:
             print("ERROR: %s" % ( e ) )
 

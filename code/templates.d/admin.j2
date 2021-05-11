@@ -2,13 +2,18 @@
 <title> tesing stuff - admin page </title>
 <body>
 
-welcome admin {{ user.name }}
+Welcome admin {{ user.name }}
 
+<p><a href="/user"> User area </a>
 
 <form action="/logout" method="get">
 <input type="submit" name="logout" value="logout">
 </form>
 
+For more help, please contact<br>
+{% for a in adminlist %}
+<a href="mailto:{{ a.email }}"> {{ a.uname }} </a>
+{% endfor %}
 
 </body>
 </html>

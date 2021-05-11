@@ -9,5 +9,11 @@ Password: <input id="userpass" name="userpass" type="password"/><br>
 <input type="submit" name="submit" value="Login">
 </form>
 <a href="/register"> Register </a>
+<p>
+For more help, please contact<br>
+{% for a in adminlist %}
+<a href="mailto:{{ a.email }}"> {{ a.uname }} </a>
+{% endfor %}
+
 </body>
 </html>

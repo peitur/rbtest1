@@ -2,13 +2,21 @@
 <title> tesing stuff - user {{ user.name }} </title>
 <body>
 
-welcome {{ user.name }}
+Welcome  user {{ user.name }}
 
+{% if user.role is defined and user.role == "admin" %}
+<p><a href="/admin"> Admin area </a>
+{% endif %}
 
 <form action="/logout" method="get">
 <input type="submit" name="logout" value="logout">
 </form>
 
+<p>
+For more help, please contact<br>
+{% for a in adminlist %}
+<a href="mailto:{{ a.email }}"> {{ a.uname }} </a>
+{% endfor %}
 
 </body>
 </html>
