@@ -14,7 +14,8 @@ class Database( object ):
             "uname": "TEXT UNIQUE",
             "email": "TEXT UNIQUE",
             "password":"TEXT",
-            "role":"TEXT"
+            "role":"TEXT",
+            "comment":"BLOB"
         }
 
     def init( self ):
@@ -44,7 +45,7 @@ class Database( object ):
 
 
     def insert( self, data ):
-        qstr = "insert into users( uname, email, password, role ) values( '%s', '%s', '%s', '%s' )" % ( data['uname'], data['email'], data['password'], data['role'] )
+        qstr = "insert into users( uname, email, password, role, comment ) values( '%s', '%s', '%s', '%s', '%s' )" % ( data['uname'], data['email'], data['password'], data['role'], data['comment'] )
         if self._debug:
             print("DB I: %s" % ( qstr) )
 

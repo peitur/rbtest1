@@ -10,10 +10,21 @@ Welcome admin {{ user.name }}
 <input type="submit" name="logout" value="logout">
 </form>
 
+<p>
+My comments:
+{% if user.comment is defined %}
+<table><tr><td> {{ user.comment }} </td></tr></table>
+{% endif %}
+<p>
+
+
+
 For more help, please contact<br>
 {% for a in adminlist %}
 <a href="mailto:{{ a.email }}"> {{ a.uname }} </a>
 {% endfor %}
+
+
 
 </body>
 </html>

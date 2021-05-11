@@ -34,6 +34,15 @@ class Users( object ):
             ret.append( { fields[x]: v for x,v in enumerate(r) } )
         return ret
 
+    def get_user_comment( self, username ):
+        ret = list()
+        fields = ["id", "uname","comment"]
+        qres = self._db.query( "users", fields , {"uname": username } )
+        for r in qres:
+            ret.append( { fields[x]: v for x,v in enumerate(r) } )
+        return ret.pop(0)['comment']
+
+
     def get_userid( self, userid ):
         ret = list()
         fields = ["id", "uname","role","password","email"]
@@ -59,5 +68,5 @@ class Users( object ):
         return ret
 
 
-    def mk_user( self, username, email, password, role="user" ):
-        self._db.insert( { "uname": username.lower(), "email": email.lower(), 'password': password, "role": role } )
+    def mk_user( self, username, email, password, role="user", comment='' ):
+        self._db.insert( { "uname": username.lower(), "email": email.lower(), 'password': password, "role": role , "comment":comment} )

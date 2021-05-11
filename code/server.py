@@ -70,8 +70,9 @@ def page_admin():
         username = flask.session['username']
         user = users.get_username( username ).pop(0)
         admins = users.get_admins()
+        ucomment = users.get_user_comment( username )
 
-        return flask.render_template("admin.j2", user={ "name": user['uname']}, adminlist=admins )
+        return flask.render_template("admin.j2", user={ "name": user['uname'], "comment": ucomment }, adminlist=admins )
 
     return flask.redirect( "/error" )
 
