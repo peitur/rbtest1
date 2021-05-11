@@ -18,8 +18,8 @@ users = server.users.Users(  file=DB_FILE )
 SEPPARATOR="."
 
 ADMINUSERS=[
-    {"uname":"peter.bartha","email":"peter.bartha@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: user1/passwd1"},
-    {"uname":"jonas.svensson","email":"jonas.svensson@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: user1/passwd1"}
+    {"uname":"peter.bartha","email":"peter.bartha@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: pbartha/2c22d351ff00ef393ab7e97a9056716072633e79"},
+    {"uname":"jonas.svensson","email":"jonas.svensson@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: jsvensson/c83db8f7338eb9018163cec02dc5247e21381503"}
 ]
 
 PASSWORDS=["password","123456","12345678","1234","qwerty","12345","dragon","pussy","baseball","football","letmein","monkey","696969","abc123","mustang","michael","shadow","master","jennifer","111111","2000","jordan","superman","harley","1234567","fuckme","hunter","fuckyou","trustno1","ranger","buster","thomas","tigger","robert","soccer","fuck","batman","test","pass","killer","hockey","george","charlie","andrew","michelle","love","sunshine","jessica","asshole","6969","pepper","daniel","access","123456789","654321","joshua","maggie","starwars","silver","william","dallas","yankees","123123","ashley","666666","hello","amanda","orange","biteme","freedom","computer","sexy","thunder","nicole","ginger","heather","hammer","summer","corvette","taylor","fucker","austin","1111","merlin","matthew","121212","golfer","cheese","princess","martin","chelsea","patrick","richard","diamond","yellow","bigdog","secret","asdfgh","sparky","cowboy","camaro","anthony"]
