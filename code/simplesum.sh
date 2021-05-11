@@ -66,10 +66,10 @@ for R in $( cat ${REFL} ); do
 			if [[ ${#D} ]]; then
 				DEC=$D
 				COD=$( echo $D|$CHKSUM|cut -d' ' -f 1)
-				echo "$D - ${HSHPWD} - ${COD}"
+				echo -ne "[ ] Checking $D - ${HSHPWD} - ${COD}                             \r"
 
 				if [[ "${HSHPWD}" == "${COD}" ]]; then
-					echo "$UNAME: $DEC"
+					echo "[+] $UNAME: $DEC"
 				fi
 			fi
 		done
