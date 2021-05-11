@@ -7,11 +7,13 @@ import sqlite3
 import hashlib
 import random
 
-import server.db
+import server.users
 
 from pprint import pprint
 
 DB_FILE="db/test.db"
+users = server.users.Users(  file=DB_FILE )
+
 
 SEPPARATOR="."
 
@@ -67,8 +69,8 @@ if __name__ == "__main__":
         p = a['password']
         print("Created admin %s - %s" % ( m.lower(), p ) )
         used.append( m )
-        db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
-
+#        db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
+        users.mk_user( m.lower(), u.lower(), checksum( p ), "admin" )
 
     for x in range( 0, 10000  ):
         f = random_firstname()
@@ -81,7 +83,8 @@ if __name__ == "__main__":
             print("Created user %s - %s" % ( m.lower(), p ) )
             used.append( m )
             try:
-                db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
+                users.mk_user( m.lower(), u.lower(), checksum( p ), "user" )
+                # { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
             except sqlite3.IntegrityError as e:
                 print("ERROR: %s" % ( e ) )
-    pprint( db.query() )
+    pprint( users.get_all() )

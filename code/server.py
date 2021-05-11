@@ -6,7 +6,7 @@ import jinja2
 import sqlite3
 import hashlib
 
-import server.db
+import server.users
 
 from pprint import pprint
 
@@ -17,7 +17,8 @@ USERS={
     "user4":{ "id":"4", "name":"user four", "passwd":"user4pass", "role":"user"}
 }
 
-db = server.db.Database("db/test.db")
+DB_FILE="db/test.db"
+users = server.users.Users(  file=DB_FILE )
 
 app = flask.Flask( __name__, template_folder="templates.d" )
 app.secret_key = b'aaaaaaaaaaaaaaaaaaaaaa'
@@ -30,23 +31,32 @@ def page_login( ):
     if flask.request.method == 'POST':
 
         username = flask.request.form['username']
-
-        info = db.query( {"uname": username })
-        pprint( info )
-
         reqpaswd = get_checksum( flask.request.form['userpass'] )
+
+        q = users.get_user( username )
+        if len( q ) != 1:
+            return flask.redirect( flask.url_for( 'page_error_badlogin' ) )
+
+        info = q.pop(0)
+
         refpaswd = info['password']
 
         if refpaswd == reqpaswd:
 
-            user = info
             flask.session['username'] = username
-            flask.session['userid'] = user['id']
+            flask.session['userid'] = info['id']
+            flask.session['userrole'] = info['role']
+            flask.session['email'] = info['email']
+            flask.session['role'] = info['role']
 
-            if user['role'] in ("user"):
+            pprint( info )
+
+            if info['role'] in ("user"):
                 return flask.redirect( flask.url_for( 'page_user' ) )
-            elif user['role'] in ("admin"):
+            elif info['role'] in ("admin"):
                 return flask.redirect( flask.url_for( 'page_admin' ) )
+            else:
+                return flask.redirect( flask.url_for( 'page_logout' ) )
 
         else:
             return flask.redirect( flask.url_for( 'page_error_badlogin' ) )
@@ -58,22 +68,45 @@ def page_login( ):
 def page_user():
 
     if 'username' in flask.session and flask.session['username']:
-        user = USERS[ flask.session['username']]
+        username = flask.session['username']
+        user = users.get_user( username ).pop(0)
 
-        return flask.render_template("user.j2", user={ "name": user['name']} )
+        return flask.render_template("user.j2", user={ "name": user['uname']} )
 
     return flask.redirect( "/error" )
 
 
 @app.route('/admin')
 def page_admin():
-
+    ## SEC: user role validation not done
     if 'username' in flask.session and flask.session['username']:
-        user = USERS[ flask.session['username']]
+        username = flask.session['username']
+        user = users.get_user( username ).pop(0)
 
-        return flask.render_template("admin.j2", user={ "name": user['name']} )
+        return flask.render_template("admin.j2", user={ "name": user['uname']} )
 
     return flask.redirect( "/error" )
+
+@app.route('/register',methods=['GET', 'POST'])
+def page_register():
+    flask.session.clear()
+
+    if flask.request.method == 'POST':
+        role = "user"
+        firstname = flask.request.form['fname']
+        lastname = flask.request.form['fname']
+        username = "%s.%s" % ( firstname.lower(), lastname.lower() )
+        email = flask.request.form['email']
+        if flask.request.form['userpass1'] != flask.request.form['userpass2']:
+            return flask.redirect( "/error" )
+        password = get_checksum( flask.request.form['userpass1'] )
+        if 'role' in flask.request.form:
+            role = flask.request.form['role']
+        users.mk_user( username, email, password, role )
+
+        return flask.redirect( flask.url_for( 'page_login' ) )
+
+    return flask.render_template("register.j2" )
 
 
 @app.route('/logout',methods=['GET', 'POST'])
@@ -86,6 +119,9 @@ def page_logout():
 def page_error_badlogin():
     return "bad login"
 
+@app.route('/error')
+def page_error():
+    return "oops"
 
 ################
 def get_checksum( s ):
