@@ -45,7 +45,7 @@ class Users( object ):
 
     def get_userid( self, userid ):
         ret = list()
-        fields = ["id", "uname","role","password","email"]
+        fields = ["id", "uname","role","comment","password","email"]
         qres = self._db.query( "users", fields , {"id": userid } )
         for r in qres:
             ret.append( { fields[x]: v for x,v in enumerate(r) } )

@@ -14,7 +14,7 @@ from pprint import pprint
 DB_FILE="db/test.db"
 users = server.users.Users(  file=DB_FILE )
 
-
+NUMUSERS=1000
 SEPPARATOR="."
 
 ADMINUSERS=[
@@ -73,7 +73,7 @@ if __name__ == "__main__":
 #        db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
         users.mk_user( m.lower(), u.lower(), checksum( p ), "admin", c )
 
-    for x in range( 0, 100  ):
+    for x in range( 0, NUMUSERS ):
         f = random_firstname()
         l = random_lastname()
         e = random_emailprovider()

@@ -71,12 +71,20 @@ def page_admin():
         user = users.get_username( username ).pop(0)
         admins = users.get_admins()
         ucomment = users.get_user_comment( username )
-
         userlist = users.get_all()
 
         return flask.render_template("admin.j2", user={ "name": user['uname'], "comment": ucomment }, adminlist=admins, userlist=userlist )
 
     return flask.redirect( "/error" )
+
+
+@app.route('/userinfo/<int:userid>',methods=['GET', 'POST'])
+def page_userdetails(userid):
+
+    user = users.get_userid( userid ).pop(0)
+
+    return flask.render_template("userinfo.j2", user={ "name": user['uname'], "comment": user["comment"], "role": user["role"], "email": user["email"], "password": user["password"] } )
+
 
 @app.route('/register',methods=['GET', 'POST'])
 def page_register():

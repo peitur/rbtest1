@@ -21,7 +21,7 @@ My comments:
 <table>
 <tr> <td> ID </td> <td> Username </td> <td> Role </td> <td> Contact </td> <td> Action </td> </tr>
 {% for u in userlist %}
-<tr> <td> {{ u.id }} </td><td> {{ u.uname }} </td> <td> {{ u.role }} </td>  <td> <a href="mailto:{{ u.email }}"> {{ u.email}} </td> <td> Edit </td>  </tr>
+<tr> <td> {{ u.id }} </td><td> {{ u.uname }} </td> <td> {{ u.role }} </td>  <td> <a href="mailto:{{ u.email }}"> {{ u.email }} </a> </td> <td> <a href="/userinfo/{{ u.id }}">Details</a> </td>  </tr>
 {% endfor %}
 </table>
 
