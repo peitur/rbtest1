@@ -6,4 +6,4 @@ all :
 	virtualenv-3 .
 
 clean :
-	rm -fR bin lib pyvenv.cfg
+	rm -fR bin lib lib64 pyvenv.cfg include
