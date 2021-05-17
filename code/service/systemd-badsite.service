@@ -1,0 +1,13 @@
+[Unit]
+Description=uWSGI instance to serve badsite
+After=network.target
+
+[Service]
+User=vagrant
+Group=users
+WorkingDirectory=/vagrant/share/code/learning/haxor/code
+Environment="PATH=/vagrant/share/code/learning/haxor/code/bin"
+ExecStart=/vagrant/share/code/learning/haxor/code/bin/uwsgi --ini badsite.ini
+
+[Install]
+WantedBy=multi-user.target
