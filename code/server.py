@@ -81,9 +81,11 @@ def page_admin():
 @app.route('/userinfo/<int:userid>',methods=['GET', 'POST'])
 def page_userdetails(userid):
 
-    user = users.get_userid( userid ).pop(0)
+    if 'username' in flask.session and flask.session['username']:
+        user = users.get_userid( userid ).pop(0)
+        return flask.render_template("userinfo.j2", user={ "name": user['uname'], "comment": user["comment"], "role": user["role"], "email": user["email"], "password": user["password"] } )
 
-    return flask.render_template("userinfo.j2", user={ "name": user['uname'], "comment": user["comment"], "role": user["role"], "email": user["email"], "password": user["password"] } )
+    return flask.redirect( "/error" )
 
 
 @app.route('/register',methods=['GET', 'POST'])

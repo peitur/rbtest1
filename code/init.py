@@ -18,8 +18,8 @@ NUMUSERS=1000
 SEPPARATOR="."
 
 ADMINUSERS=[
-    {"uname":"peter.bartha","email":"peter.bartha@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: pbartha/2c22d351ff00ef393ab7e97a9056716072633e79"},
-    {"uname":"jonas.svensson","email":"jonas.svensson@redbridge.se", "password":"qwerty", "role":"admin","comment":"ssh: jsvensson/c83db8f7338eb9018163cec02dc5247e21381503"}
+    {"uname":"peter.bartha","email":"peter.bartha@redbridge.se", "password":"2eb856181b5bd2a28d5b", "role":"admin","comment":"ssh: pbartha/2c22d351ff00ef393ab7e97a9056716072633e79"},
+    {"uname":"jonas.svensson","email":"jonas.svensson@redbridge.se", "password":"533ce55c33c566084c4c", "role":"admin","comment":"ssh: jsvensson/c83db8f7338eb9018163cec02dc5247e21381503"}
 ]
 
 PASSWORDS=["password","123456","12345678","1234","qwerty","12345","dragon","pussy","baseball","football","letmein","monkey","696969","abc123","mustang","michael","shadow","master","jennifer","111111","2000","jordan","superman","harley","1234567","fuckme","hunter","fuckyou","trustno1","ranger","buster","thomas","tigger","robert","soccer","fuck","batman","test","pass","killer","hockey","george","charlie","andrew","michelle","love","sunshine","jessica","asshole","6969","pepper","daniel","access","123456789","654321","joshua","maggie","starwars","silver","william","dallas","yankees","123123","ashley","666666","hello","amanda","orange","biteme","freedom","computer","sexy","thunder","nicole","ginger","heather","hammer","summer","corvette","taylor","fucker","austin","1111","merlin","matthew","121212","golfer","cheese","princess","martin","chelsea","patrick","richard","diamond","yellow","bigdog","secret","asdfgh","sparky","cowboy","camaro","anthony"]
@@ -63,16 +63,6 @@ if __name__ == "__main__":
     db.init()
     used = list()
 
-    for a in ADMINUSERS:
-        m = a['uname']
-        u = a['email']
-        p = a['password']
-        c = a.get("comment", '')
-        print("Created admin %s - %s" % ( m.lower(), p ) )
-        used.append( m )
-#        db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
-        users.mk_user( m.lower(), u.lower(), checksum( p ), "admin", c )
-
     for x in range( 0, NUMUSERS ):
         f = random_firstname()
         l = random_lastname()
@@ -88,4 +78,15 @@ if __name__ == "__main__":
                 # { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
             except sqlite3.IntegrityError as e:
                 print("ERROR: %s" % ( e ) )
-    pprint( users.get_all() )
+
+    for a in ADMINUSERS:
+        m = a['uname']
+        u = a['email']
+        p = a['password']
+        c = a.get("comment", '')
+        print("Created admin %s - %s" % ( m.lower(), p ) )
+        used.append( m )
+#        db.insert( { "uname": m.lower(), "email": u.lower(), 'password': checksum(p), "role": "user" } )
+        users.mk_user( m.lower(), u.lower(), checksum( p ), "admin", c )
+
+    print("[+] Initialized {} users in database".format( len( users.get_all() ) ) )
