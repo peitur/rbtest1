@@ -33,3 +33,22 @@ python3 init.py
 cd code
 python3 server.py
 ```
+
+## simplesum.sh
+
+Decode nonsalted hashed passwords
+```
+cd code
+simplesum.sh ../examples/10k-worst-passwords.txt users.txt md5
+```
+
+File format for users:
+```
+username:hashedpassword
+```
+
+Example:
+```
+user1:wkjnefkwjenfkwjenfkwjefnkweuwi37rh24ir72348fhewi
+user2:9283fn2938fn293fn2983fnwiendfw98j9jofhwnow3fg8w3
+``
