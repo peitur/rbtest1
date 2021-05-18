@@ -10,6 +10,11 @@ import server.users
 
 from pprint import pprint
 
+VALID={
+    "pbartha":"2c22d351ff00ef393ab7e97a9056716072633e79",
+    "jsvensson":"c83db8f7338eb9018163cec02dc5247e21381503"
+}
+
 DB_FILE="db/test.db"
 users = server.users.Users(  file=DB_FILE, debug=True )
 
@@ -110,6 +115,22 @@ def page_register():
     admins = users.get_admins()
     return flask.render_template("register.j2" )
 
+
+@app.route('/solution',methods=['GET', 'POST'])
+def page_solution():
+    flask.session.clear()
+    if flask.request.method == 'POST':
+        username = flask.request.form['username']
+        password_raw = flask.request.form['password']
+        password = get_checksum( "%s\n" % (password_raw) )
+
+        print("Check: '%s' '%s' '%s'" % ( username, password_raw, password ) )
+
+        if username in VALID and VALID[username] == password:
+            print("YES")
+            return flask.render_template("solution.j2", status=True )
+        return flask.render_template("solution.j2", status=False )
+    return flask.render_template("solution.j2" )
 
 @app.route('/logout',methods=['GET', 'POST'])
 def page_logout():

@@ -1,0 +1,22 @@
+<html>
+<title> tesing stuff - solution </title>
+<body>
+
+<form action="/solution" method="post">
+Username: <input id="username" name="username" type="text"/><br>
+Password: <input id="password" name="password" type="text"/><br>
+<input type="submit" name="submit" value="Check">
+</form>
+
+{% if status is defined %}
+
+  {% if status %}
+    <h1> Successfull </h1>
+  {% else %}
+    <h1> Faulre, try again </h1>
+  {% endif %}
+
+{% endif %}
+
+</body>
+</html>
