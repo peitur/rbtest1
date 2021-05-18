@@ -69,7 +69,7 @@ for R in $( cat ${REFL} ); do
 				echo -ne "[ ] Checking             ${HSHPWD} - ${COD}                             \r"
 
 				if [[ "${HSHPWD}" == "${COD}" ]]; then
-					echo "[+] $UNAME: $DEC"
+					echo -ne "[+] Found              $UNAME: $DEC                                               ${COD} \n"
 				fi
 			fi
 		done
